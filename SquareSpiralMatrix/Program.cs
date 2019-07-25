@@ -6,7 +6,9 @@ namespace SquareSpiralMatrix
     {
         static void Main(string[] args)
         {
-            PrintMatrix(GenerateSpiralMatrix(3));
+            Console.Write("Enter number n: ");
+            int n = int.Parse(Console.ReadLine());
+            PrintMatrix(GenerateSpiralMatrix(n));
         }
 
         private static int[,] GenerateSpiralMatrix(int n)
@@ -14,24 +16,34 @@ namespace SquareSpiralMatrix
             int[,] matrix = new int[n, n];
             int row = 0;
             int col = n - 1;
-            int stepsCount = 0;
+            int stepsCount = n;
+            int stepsDone = 1;
+            int stepChange = 1;
             int direction = 0;
 
             for (int i = 1; i <= n * n; i++)
             {
+                //Console.WriteLine("Matrix: {0}, {1}", row, col);
                 // Fill the current cell
                 matrix[row, col] = i;
 
                 // Check for direction change
-                if (stepsCount == 2)
+                if (stepsDone < stepsCount)
                 {
-                    stepsCount = 0;
+                    stepsDone++;
+                }
+                else
+                {
+                    stepsDone = 1;
+                    if (stepChange == 1)
+                    {
+                        stepsCount--;
+                    }
+                    stepChange = (stepChange + 1) % 2;
                     direction = (direction + 1) % 4;
-                } else
-                {
-                    stepsCount++;
                 }
 
+                // Move to the next cell
                 switch(direction)
                 {
                     case 0: row++; break;
@@ -49,7 +61,7 @@ namespace SquareSpiralMatrix
             {
                 for (int col = 0; col < matrix.GetLength(1); col++)
                 {
-                    Console.Write(matrix[row, col] + " ");
+                    Console.Write("{0,4}", matrix[row, col]);
                 }
                 Console.WriteLine();
             }
